@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
+  <title>Resultados de Loterías</title>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>RESULTADOS</h1>
+          <small id="status">Cargando datos…</small>
+        </div>
+        <span class="pill"><span class="dot"></span><span id="countPill">0</span> resultados</span>
+      </div>
+
+      <div class="controls">
+        <div class="field">
+          <label for="lotSel">Lotería</label>
+          <select id="lotSel"><option value="">Todas</option></select>
+        </div>
+        <div class="field">
+          <label for="q">Buscar</label>
+          <input id="q" placeholder="Ej: 8:00 AM, 775, Aries, terminal..." />
+        </div>
+        <button class="btn" id="refreshBtn" type="button">Actualizar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <h2>Resultados de Loterías</h2>
+          <p>Consulta los resultados del día por lotería y horario. Filtra por nombre, número, signo o terminales.</p>
+
+          <div class="hero-meta">
+            <span>Última carga: <b id="lastLoad">—</b></span>
+            <span>•</span>
+            <span>Total filas: <b id="totalRows">—</b></span>
+          </div>
+        </div>
+
+        <div class="statbox">
+          <div class="big">Actualizado en tiempo real</div>
+          <div class="small">Los datos se leen desde las principales agencias de lotería del país y se muestran en esta página.</div>
+        </div>
+      </div>
+    </section>
+
+    <div id="err" class="error" style="display:none;"></div>
+
+    <div class="section-title">
+      <h3>Resultados</h3>
+      <div class="countBadge"><span id="countBadge">0</span> mostrados</div>
+    </div>
+
+    <!-- ✅ Tabs -->
+    <div class="tabs" id="tabs">
+      <button class="tab active" type="button" data-cat="loteria">Resultados</button>
+      <button class="tab" type="button" data-cat="animalitos">Resultados de Animalitos</button>
+    </div>
+
+    <div id="grid" class="grid" style="display:none;"></div>
+    <div id="empty" class="empty" style="display:none;">No hay resultados con esos filtros.</div>
+
+    <footer>
+      <span>© <span id="year"></span> Resultados de Loterías</span>
+      <span>Datos: Loterías de Venezuela • Fuente: tuazar.com</span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
