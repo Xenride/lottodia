@@ -5,7 +5,9 @@ from bs4 import BeautifulSoup
 import gspread
 from google.oauth2.service_account import Credentials
 import os, json
-from google.oauth2.service_account import Credentials
+import time
+import random
+from gspread.exceptions import APIError, WorksheetNotFound
 
 def get_creds():
     scopes = ["https://www.googleapis.com/auth/spreadsheets"]
@@ -28,6 +30,44 @@ WORKSHEET_NAME = "Resultados"
 SERVICE_ACCOUNT_JSON = "service_account.json"
 
 TIME_RE = re.compile(r"\d{1,2}:\d{2}\s?(AM|PM)", re.IGNORECASE)
+
+# --- Google Sheets API: retries for transient errors (429/5xx) ---
+RETRYABLE_STATUS = {429, 500, 502, 503, 504}
+
+def _status_code_from_api_error(err: Exception):
+    resp = getattr(err, 'response', None)
+    return getattr(resp, 'status_code', None)
+
+def with_backoff(fn, *, max_attempts=6, base_delay=2.0, max_delay=60.0, label='gspread'):
+    """
+    Ejecuta `fn()` con reintentos y exponential backoff + jitter para errores transitorios.
+    Útil para 503 'service unavailable' que puede ocurrir al leer/escribir en Google Sheets.
+    """
+    for attempt in range(1, max_attempts + 1):
+        try:
+            return fn()
+        except APIError as e:
+            status = _status_code_from_api_error(e)
+            if status not in RETRYABLE_STATUS or attempt == max_attempts:
+                raise
+
+            delay = min(max_delay, base_delay * (2 ** (attempt - 1)))
+            jitter = delay * (0.3 + random.random() * 0.4)  # 30% - 70%
+            sleep_s = delay + jitter
+            print(f'[{label}] Retryable error {status}. Sleeping {sleep_s:.1f}s (attempt {attempt}/{max_attempts})')
+            time.sleep(sleep_s)
+
+def safe_ws_update(ws, values, *, range_name='A1'):
+    """Compatibilidad entre versiones de gspread: intenta distintas firmas de update()."""
+    def _call():
+        try:
+            return ws.update(range_name, values, value_input_option='RAW')
+        except TypeError:
+            try:
+                return ws.update(values, range_name=range_name, value_input_option='RAW')
+            except TypeError:
+                return ws.update(values, range_name)
+    return with_backoff(_call, label='update')
 
 # Schema fijo por tipo de lotería (para /loteria/resultados/)
 LOTTERY_SCHEMA = {
@@ -214,14 +254,16 @@ def parse_animalitos(html: str):
 def write(rows):
     creds = get_creds()
     gc = gspread.authorize(creds)
-    sh = gc.open_by_key(SHEET_ID)
+
+    # 503/5xx pueden ocurrir de forma transitoria en la API de Google Sheets.
+    sh = with_backoff(lambda: gc.open_by_key(SHEET_ID), label="open_by_key")
 
     try:
-        ws = sh.worksheet(WORKSHEET_NAME)
-    except:
-        ws = sh.add_worksheet(WORKSHEET_NAME, 4000, 30)
+        ws = with_backoff(lambda: sh.worksheet(WORKSHEET_NAME), label="worksheet")
+    except WorksheetNotFound:
+        ws = with_backoff(lambda: sh.add_worksheet(title=WORKSHEET_NAME, rows=4000, cols=30), label="add_worksheet")
 
-    ws.clear()
+    with_backoff(lambda: ws.clear(), label="clear")
 
     # Columnas finales (unión de ambos mundos)
     columns = ["categoria", "fecha", "loteria", "horario"]
@@ -237,14 +279,11 @@ def write(rows):
         if c not in columns:
             columns.append(c)
 
-    ws.append_row(columns)
+    data = [[r.get(c, "") for c in columns] for r in rows]
+    values = [columns] + data
 
-    data = []
-    for r in rows:
-        data.append([r.get(c, "") for c in columns])
-
-    if data:
-        ws.append_rows(data, value_input_option="RAW")
+    # Un solo update (más eficiente y menos propenso a errores que append_* repetidos)
+    safe_ws_update(ws, values, range_name="A1")
 
 
 def main():
