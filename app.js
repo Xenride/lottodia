@@ -187,7 +187,7 @@ async function loadData() {
     RAW = parseCSV(text);
 
     els.lastLoad.textContent = new Date().toLocaleString();
-    els.status.textContent = "Listo. Datos cargados desde Google Sheets.";
+    els.status.textContent = "Listo. Datos cargados correctamente.";
 
     // Inicializa tabs + filtros con categoría por defecto
     setCategory(CURRENT_CAT);

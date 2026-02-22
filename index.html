@@ -3,14 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="style.css">
-  <title>Resultados de Loterías y Animalitos en Venezuela | Actualizados Hoy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#40C682">
+<link rel="canonical" href="https://lottodia.vercel.app/">
+<meta property="og:title" content="LotoDía | Resultados de Loterías y Animalitos en Venezuela">
+<meta property="og:description" content="Consulta los resultados de loterías y animalitos en Venezuela actualizados hoy. Filtra por horario, número, signo y terminales.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lottodia.vercel.app/">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="style.css">
+  <title>LotoDía | Resultados de Loterías y Animalitos en Venezuela</title>
 
 <meta name="description" content="Consulta los resultados de loterías y animalitos en Venezuela actualizados hoy. Resultados por horario, número, signo y terminales en tiempo real.">
 
 <meta name="keywords" content="resultados loteria venezuela, resultados animalitos hoy, lotto activo, triple zamorano, chance, terminales, animalitos venezuela">
 
-<meta name="author" content="Resultados Venezuela">
+<meta name="author" content="LotoDía">
 
 <meta name="robots" content="index, follow">
 </head>
@@ -18,9 +28,9 @@
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <div class="logo"></div>
+        <div class="logo" aria-label="LotoDía"><span class="logo-text">LD</span></div>
         <div>
-          <h1>RESULTADOS</h1>
+          <h1 class="brand-title"><span class="brand-word">LOTO</span> <span class="brand-accent">DÍA</span></h1>
           <small id="status">Cargando datos…</small>
         </div>
         <span class="pill"><span class="dot"></span><span id="countPill">0</span> resultados</span>
@@ -78,10 +88,14 @@
     <div id="empty" class="empty" style="display:none;">No hay resultados con esos filtros.</div>
 
     <footer>
-      <span>© <span id="year"></span> Resultados de Loterías</span>
-      <span>Datos: Loterías de Venezuela • Fuente: tuazar.com</span>
+      <span>© <span id="year"></span> LotoDía</span>
+      <span>Datos: Loterías de Venezuela</span>
     </footer>
   </div>
+
+  <noscript>
+    <div class="noscript">Esta página requiere JavaScript para mostrar los resultados.</div>
+  </noscript>
 
   <script src="app.js"></script>
 </body>
