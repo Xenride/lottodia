@@ -4,36 +4,43 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap" rel="stylesheet">
-<meta name="theme-color" content="#40C682">
-<link rel="canonical" href="https://lottodia.vercel.app/">
-<meta property="og:title" content="LotoDía | Resultados de Loterías y Animalitos en Venezuela">
-<meta property="og:description" content="Consulta los resultados de loterías y animalitos en Venezuela actualizados hoy. Filtra por horario, número, signo y terminales.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://lottodia.vercel.app/">
-<meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <meta name="theme-color" content="#40C682">
+  <link rel="canonical" href="https://lotodia.com">
+  <meta property="og:title" content="LotoDía | Resultados de Loterías y Animalitos en Venezuela">
+  <meta property="og:description" content="Consulta los resultados de loterías y animalitos en Venezuela actualizados hoy. Filtra por horario, número, signo y terminales.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lotodia.com">
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="style.css">
   <title>LotoDía | Resultados de Loterías y Animalitos en Venezuela</title>
 
-<meta name="description" content="Consulta los resultados de loterías y animalitos en Venezuela actualizados hoy. Resultados por horario, número, signo y terminales en tiempo real.">
-
-<meta name="keywords" content="resultados loteria venezuela, resultados animalitos hoy, lotto activo, triple zamorano, chance, terminales, animalitos venezuela">
-
-<meta name="author" content="LotoDía">
-
-<meta name="robots" content="index, follow">
+  <meta name="description" content="Consulta los resultados de loterías y animalitos en Venezuela actualizados hoy. Resultados por horario, número, signo y terminales en tiempo real.">
+  <meta name="keywords" content="resultados loteria venezuela, resultados animalitos hoy, lotto activo, triple zamorano, chance, terminales, animalitos venezuela">
+  <meta name="author" content="LotoDía">
+  <meta name="robots" content="index, follow">
 </head>
 <body>
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <div class="logo" aria-label="LotoDía"><span class="logo-text">LD</span></div>
+        <div class="logo" aria-label="LotoDía">
+          <img src="logo.svg" alt="Logo LotoDía" class="logo-img">
+        </div>
         <div>
           <h1 class="brand-title"><span class="brand-word">LOTO</span> <span class="brand-accent">DÍA</span></h1>
           <small id="status">Cargando datos…</small>
         </div>
         <span class="pill"><span class="dot"></span><span id="countPill">0</span> resultados</span>
+        
+        <div class="topbar-socials">
+          <a href="https://whatsapp.com/channel/0029VbC6h9s1dAvuci3T4l2S" target="_blank" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
+          <a href="https://t.me/lotodiavzla" target="_blank" aria-label="Telegram"><i data-lucide="send"></i></a>
+        </div>
       </div>
 
       <div class="controls">
@@ -52,17 +59,20 @@
 
   <div class="wrap">
     <section class="hero">
-      <div class="hero-grid">
-        <div>
-          <h2>Resultados de Loterías</h2>
-          <p>Consulta los resultados del día por lotería y horario. Filtra por nombre, número, signo o terminales.</p>
+  <div class="hero-grid">
+    <div>
+      <h2>Resultados de Loterías</h2>
+      <div class="text-slider">
+        <p id="hero-text" class="slide-active">Consulta los resultados del día por lotería y horario. Filtra por nombre, número, signo o terminales.</p>
+        <p id="promo-text">Sé el primero en enterarte. 🔔 Únete a nuestros canales de WhatsApp y Telegram para recibir alertas en tiempo real.</p>
+      </div>
 
-          <div class="hero-meta">
-            <span>Última carga: <b id="lastLoad">—</b></span>
-            <span>•</span>
-            <span>Total filas: <b id="totalRows">—</b></span>
-          </div>
-        </div>
+      <div class="hero-meta">
+        <span>Última carga: <b id="lastLoad">—</b></span>
+        <span>•</span>
+        <span>Total filas: <b id="totalRows">—</b></span>
+      </div>
+    </div>
 
         <div class="statbox">
           <div class="big">Actualizado en tiempo real</div>
@@ -78,7 +88,6 @@
       <div class="countBadge"><span id="countBadge">0</span> mostrados</div>
     </div>
 
-    <!-- ✅ Tabs -->
     <div class="tabs" id="tabs">
       <button class="tab active" type="button" data-cat="loteria">Resultados</button>
       <button class="tab" type="button" data-cat="animalitos">Resultados de Animalitos</button>
@@ -88,7 +97,13 @@
     <div id="empty" class="empty" style="display:none;">No hay resultados con esos filtros.</div>
 
     <footer>
-      <span>© <span id="year"></span> LotoDía</span>
+      <div class="footer-left">
+        <span>© <span id="year"></span> LotoDía</span>
+        <div class="footer-socials">
+          <a href="https://whatsapp.com/channel/0029VbC6h9s1dAvuci3T4l2S" target="_blank"><i data-lucide="message-circle"></i></a>
+          <a href="https://t.me/lotodiavzla" target="_blank"><i data-lucide="send"></i></a>
+        </div>
+      </div>
       <span>Datos: Loterías de Venezuela</span>
     </footer>
   </div>
@@ -98,5 +113,9 @@
   </noscript>
 
   <script src="app.js"></script>
+  <script>
+    // Inicializar iconos de Lucide
+    lucide.createIcons();
+  </script>
 </body>
 </html>

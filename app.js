@@ -225,6 +225,26 @@ if (els.tabs) {
   });
 }
 
+function initTextSlider() {
+  const text1 = document.getElementById('hero-text');
+  const text2 = document.getElementById('promo-text');
+  let showPromo = false;
+
+  setInterval(() => {
+    if (!showPromo) {
+      text1.classList.remove('slide-active');
+      text2.classList.add('slide-active');
+    } else {
+      text2.classList.remove('slide-active');
+      text1.classList.add('slide-active');
+    }
+    showPromo = !showPromo;
+  }, 5000); // Cambia cada 5 segundos
+}
+
+// Ejecutar la función
+initTextSlider();
+
 // Init
 loadData();
 document.getElementById("year").textContent = new Date().getFullYear();
